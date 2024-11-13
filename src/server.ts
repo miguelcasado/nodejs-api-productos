@@ -2,6 +2,8 @@ import express from 'express'
 import router from './router'
 import morgan from 'morgan'
 import cors from 'cors'
+import { protect } from './modules/auth'
+import { createNewUser, signIn } from './handlers/user'
 const app = express()
 
 //esto es un logging
@@ -19,7 +21,10 @@ app.get('/',(req,res) => {
     res.json({message: 'hello'})
 })
 
+//protejo mi api
+app.use('/api', protect ,router)
 
-app.use('/api', router)
+app.post('/user',createNewUser)
+app.post('/signin',signIn)
 
 export default app
